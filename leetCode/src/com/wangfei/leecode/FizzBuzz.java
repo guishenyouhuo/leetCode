@@ -9,7 +9,7 @@ public class FizzBuzz {
 	public static void main(String[] args) {
 
 		FizzBuzz fb = new FizzBuzz();
-		System.out.println(Arrays.toString(fb.fizzBuzz(15).toArray()));
+		System.out.println(Arrays.toString(fb.fizzBuzz(50).toArray()));
 	}
 	
 	/**
