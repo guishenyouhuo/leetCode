@@ -116,14 +116,14 @@ public final class SortUtils {
 			}
 		}
 	}
-	public static void main(String[] args) {
-//		int[] nums = {-9,-7,-3, 2,5,-4,-1,7,3,6,11,34,21,17,-8,-33};
-		int[] nums = new int[100];
-		for(int i = 0; i < nums.length; i++){
-			nums[i] = new Random().nextInt(1000) - 200;
-		}
-		System.out.println(Arrays.toString(nums));
-		heapSort(nums);
-		System.out.println(Arrays.toString(nums));
-	}
+//	public static void main(String[] args) {
+////		int[] nums = {-9,-7,-3, 2,5,-4,-1,7,3,6,11,34,21,17,-8,-33};
+//		int[] nums = new int[100];
+//		for(int i = 0; i < nums.length; i++){
+//			nums[i] = new Random().nextInt(1000) - 200;
+//		}
+//		System.out.println(Arrays.toString(nums));
+//		heapSort(nums);
+//		System.out.println(Arrays.toString(nums));
+//	}
 }
