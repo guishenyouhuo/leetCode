@@ -31,7 +31,10 @@ public final class TreeUtils {
 				continue;
 			}
 			Integer leftVal = nums[i++];
-			Integer rightVal = nums[i];
+			Integer rightVal = null;
+			if(i < nums.length){
+				rightVal = nums[i];
+			}
 			if(leftVal != null){
 				node.left = new TreeNode(leftVal);
 				queue.offer(node.left);
