@@ -7,8 +7,8 @@ public class CommonPrefix {
 
 	public static void main(String[] args) {
 //		String[] strs = {"ABCFDGS","ABC",  "ABCDFEC"};
-		String[] strs = {"aca","cba"};
-		// String[] strs = {"C", "ABCFDGS", "ABCDFEC"};
+//		String[] strs = {"aca","cba"};
+		 String[] strs = {"C", "ABCFDGS", "ABCDFEC"};
 		System.out.println(longestCommonPrefix1(strs));
 	}
 	
