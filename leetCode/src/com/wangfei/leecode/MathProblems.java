@@ -20,8 +20,17 @@ public class MathProblems {
 //		System.out.println((4 - 1) & 2);
 //		System.out.println(65535 * 65535);
 		
-		int[] nums = {4,3,2,7,8,2,3,1};
-		System.out.println(mp.findDisappearedNumbers(nums));
+//		int[] nums = {4,3,2,7,8,2,3,1};
+//		System.out.println(mp.findDisappearedNumbers(nums));
+		/**
+		 * [10,9,8,7]
+			[5,6,7,8]
+		 */
+//		int g[] = {10,9,8,7};
+//		int s[] = {5,6,7,8};
+//		System.out.println(mp.findContentChildren(g, s));
+//		System.out.println("over");
+		System.out.println(mp.poorPigs(1000, 15, 60));
 	}
 	
 	/**
@@ -142,4 +151,94 @@ public class MathProblems {
         return result;
     }
 
+    /**
+     * 假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。对每个孩子 i ，都有一个胃口值 gi ，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 j ，都有一个尺寸 sj 。如果 sj >= gi ，我们可以将这个饼干 j 分配给孩子 i ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。
+		注意：
+		你可以假设胃口值为正。
+		一个小朋友最多只能拥有一块饼干。
+		示例 1:
+		输入: [1,2,3], [1,1]
+		输出: 1
+		解释: 
+		你有三个孩子和两块小饼干，3个孩子的胃口值分别是：1,2,3。
+		虽然你有两块小饼干，由于他们的尺寸都是1，你只能让胃口值是1的孩子满足。
+		所以你应该输出1。
+		示例 2:
+		输入: [1,2], [1,2,3]
+		输出: 2
+		解释: 
+		你有两个孩子和三块小饼干，2个孩子的胃口值分别是1,2。
+		你拥有的饼干数量和尺寸都足以让所有孩子满足。
+		所以你应该输出2.
+     * 使用堆排序思想，分别对两个数组建立小顶堆过程中比较大小
+     */
+    public int findContentChildren(int[] g, int[] s) {
+        if(g == null || g.length == 0){
+        	return 0;
+        }
+        if(s == null || s.length == 0){
+        	return 0;
+        }
+        int result = 0;
+        boolean gChange = true;
+        for(int i = g.length - 1, j = s.length - 1; i >= 0 && j >= 0; i--, j--){
+        	if(gChange){
+        		adjustHeap(g, i);
+        	}
+        	adjustHeap(s, j);
+        	if(s[0] >= g[0]){
+        		++result;
+        		gChange = true;
+        	} else {
+        		++i;
+        		gChange = false;
+        	}
+        	int temp = s[0];
+        	s[0] = s[j];
+        	s[j] = temp;
+        	if(gChange){
+	        	temp = g[0];
+	        	g[0] = g[i];
+	        	g[i] = temp;
+        	}
+        }
+    	return result;
+    }
+    
+    // 调整小顶堆
+    private void adjustHeap(int[] array, int lastIndex){
+    	int halfIndex = (lastIndex - 1) >> 1;
+    	for(int i = halfIndex; i >= 0; i--){
+    		int tmp = array[i];
+    		int minIndex = 2 * i + 1;
+    		if(minIndex + 1 <= lastIndex && array[minIndex + 1] < array[minIndex]){
+    			++minIndex;
+    		}
+    		if(array[minIndex] < array[i]){
+    			array[i] = array[minIndex];
+    			array[minIndex] = tmp;
+    		}
+    	}
+    }
+    
+    
+    /**
+     * 有1000只水桶，其中有且只有一桶装的含有毒药，其余装的都是水。它们从外观看起来都一样。如果小猪喝了毒药，它会在15分钟内死去。
+		问题来了，如果需要你在一小时内，弄清楚哪只水桶含有毒药，你最少需要多少只猪？
+		回答这个问题，并为下列的进阶问题编写一个通用算法。
+		进阶:
+		假设有 n 只水桶，猪饮水中毒后会在 m 分钟内死亡，你需要多少猪（x）就能在 p 分钟内找出“有毒”水桶？n只水桶里有且仅有一只有毒的桶。
+     * @param buckets
+     * @param minutesToDie
+     * @param minutesToTest
+     * @return
+     */
+    public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+        int tryTimes = minutesToTest / minutesToDie + 1;
+        int num = 0;
+        while (Math.pow(tryTimes, num) < buckets){
+        	++num;
+        }
+    	return num;
+    }
 }
