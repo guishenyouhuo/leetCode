@@ -30,7 +30,28 @@ public class MathProblems {
 //		int s[] = {5,6,7,8};
 //		System.out.println(mp.findContentChildren(g, s));
 //		System.out.println("over");
-		System.out.println(mp.poorPigs(1000, 15, 60));
+//		System.out.println(mp.poorPigs(1000, 15, 60));
+//		System.out.println(Integer.toBinaryString(255));
+//		System.out.println(Integer.toBinaryString(255));
+//		System.out.println(mp.hammingDistance(255, 255));
+		int[][] grid = {{0,1,0,0},
+		       		 {1,1,1,0},
+		    		 {0,1,0,0},
+		    		 {1,1,0,0}};
+//		System.out.println(mp.islandPerimeter(grid));
+		//[1,1,1,1,1,1,999,999,999,999,999]
+		//[499,500,501]
+		/*
+		 [282475249,622650073,984943658,144108930,470211272,101027544,457850878,458777923]
+[823564440,115438165,784484492,74243042,114807987,137522503,441282327,16531729,823378840,143542612]
+		 */
+//		 int[] houses = {282475249,622650073,984943658,144108930,470211272,101027544,457850878,458777923};
+//		 int[] heaters = {823564440,115438165,784484492,74243042,114807987,137522503,441282327,16531729,823378840,143542612};
+//		System.out.println(mp.findRadius(houses, heaters));
+//		System.out.println(Integer.toBinaryString(12345));
+//		System.out.println(Integer.toBinaryString(4038));
+		System.out.println(Integer.toBinaryString(2147483647));
+		System.out.println(mp.findComplement(2147483647));
 	}
 	
 	/**
@@ -268,5 +289,150 @@ public class MathProblems {
 			}
 		}
     	return cnt;
+    }
+    
+    /**
+     * 两个整数之间的汉明距离指的是这两个数字对应二进制位不同的位置的数目。
+		给出两个整数 x 和 y，计算它们之间的汉明距离。
+		注意：
+		0 ≤ x, y < 231.
+		示例:
+		输入: x = 1, y = 4
+		输出: 2
+		解释:
+		1   (0 0 0 1)
+		4   (0 1 0 0)
+		       ↑   ↑
+		上面的箭头指出了对应二进制位不同的位置。
+     * @param x
+     * @param y
+     * @return
+     */
+    public int hammingDistance(int x, int y) {
+        int and = x & y;
+        int or = x | y;
+        int xor = and ^ or;
+        int result = 0;
+        while (xor > 0){
+        	++result;
+        	xor &= (xor - 1);
+        }
+    	return result;
+    }
+    
+    /**
+     * 给定一个包含 0 和 1 的二维网格地图，其中 1 表示陆地 0 表示水域。网格中的格子水平和垂直方向相连（对角线方向不相连）。整个网格被水完全包围，但其中恰好有一个岛屿（或者说，一个或多个表示陆地的格子相连组成的岛屿）。岛屿中没有“湖”（“湖” 指水域在岛屿内部且不和岛屿周围的水相连）。格子是边长为 1 的正方形。网格为长方形，且宽度和高度均不超过 100 。计算这个岛屿的周长。
+		示例 :
+		[[0,1,0,0],
+		 [1,1,1,0],
+		 [0,1,0,0],
+		 [1,1,0,0]]
+		答案: 16
+		解释: 它的周长是下面图片中的 16 个黄色的边：
+     * @param grid
+     * @return
+     */
+    public int islandPerimeter(int[][] grid) {
+    	int result = 0;
+    	for(int i = 0; i < grid.length; i++){
+    		for(int j = 0; j < grid[i].length; j++){
+    			if(grid[i][j] == 1){
+    				if(j == 0){
+    					++result;
+    				}
+    				if(j == grid[i].length - 1){
+    					++result;
+    				}
+    				if(j > 0 && grid[i][j - 1] == 0){
+    					++result;
+    				}
+    				if(j < grid[i].length - 1 && grid[i][j + 1] == 0){
+    					++result;
+    				}
+    				if(i == 0){
+    					++result;
+    				}
+    				if(i == grid.length - 1){
+    					++result;
+    				}
+    				if(i > 0 && grid[i - 1][j] == 0){
+    					++result;
+    				}
+    				if(i < grid.length - 1 && grid[i + 1][j] == 0){
+    					++result;
+    				}
+    			}
+    		}
+    	}
+    	return result;
+    }
+    
+    
+    /**
+     * 冬季已经来临。 你的任务是设计一个有固定加热半径的供暖器向所有房屋供暖。
+		现在，给出位于一条水平线上的房屋和供暖器的位置，找到可以覆盖所有房屋的最小加热半径。
+		所以，你的输入将会是房屋和供暖器的位置。你将输出供暖器的最小加热半径。
+		说明:
+		给出的房屋和供暖器的数目是非负数且不会超过 25000。
+		给出的房屋和供暖器的位置均是非负数且不会超过10^9。
+		只要房屋位于供暖器的半径内(包括在边缘上)，它就可以得到供暖。
+		所有供暖器都遵循你的半径标准，加热的半径也一样。
+		示例 1:
+		输入: [1,2,3],[2]
+		输出: 1
+		解释: 仅在位置2上有一个供暖器。如果我们将加热半径设为1，那么所有房屋就都能得到供暖。
+		示例 2:
+		输入: [1,2,3,4],[1,4]
+		输出: 1
+		解释: 在位置1, 4上有两个供暖器。我们需要将加热半径设为1，这样所有房屋就都能得到供暖。
+     * @param houses
+     * @param heaters
+     * @return
+     */
+    public int findRadius(int[] houses, int[] heaters) {
+    	Arrays.sort(houses);
+    	Arrays.sort(heaters);
+    	int result = Integer.MIN_VALUE;
+        for(int i = 0; i < houses.length; i++){
+        	if(i > 0 && houses[i] == houses[i - 1]){
+        		continue;
+        	}
+        	int closedHeaterIdx = 0;
+        	int radius = Integer.MAX_VALUE;
+        	while(closedHeaterIdx < heaters.length){
+        		radius = Math.min(radius, Math.abs(houses[i] - heaters[closedHeaterIdx]));
+        		if(heaters[closedHeaterIdx] > houses[i]){
+        			break;
+        		}
+        		++closedHeaterIdx;
+        	}
+        	result = Math.max(result, radius);
+        }
+    	return result;
+    }
+    
+    
+    /**
+     * 给定一个正整数，输出它的补数。补数是对该数的二进制表示取反。
+		注意:
+		给定的整数保证在32位带符号整数的范围内。
+		你可以假定二进制数不包含前导零位。
+		示例 1:
+		输入: 5
+		输出: 2
+		解释: 5的二进制表示为101（没有前导零位），其补数为010。所以你需要输出2。
+		示例 2:
+		输入: 1
+		输出: 0
+		解释: 1的二进制表示为1（没有前导零位），其补数为0。所以你需要输出0。
+     * @param num
+     * @return
+     */
+    public int findComplement(int num) {
+        long mask = 1;
+        while (mask < num){
+        	mask <<= 1;
+        }
+    	return (int) ((~num) & (mask - 1));
     }
 }
