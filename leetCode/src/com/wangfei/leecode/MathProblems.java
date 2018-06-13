@@ -50,8 +50,12 @@ public class MathProblems {
 //		System.out.println(mp.findRadius(houses, heaters));
 //		System.out.println(Integer.toBinaryString(12345));
 //		System.out.println(Integer.toBinaryString(4038));
-		System.out.println(Integer.toBinaryString(2147483647));
-		System.out.println(mp.findComplement(2147483647));
+//		System.out.println(Integer.toBinaryString(2147483647));
+//		System.out.println(mp.findComplement(2147483647));
+//		System.out.println(99999999 * 99999999);
+		
+//		System.out.println(mp.largestPalindrome(8));
+		System.out.println(mp.findMaxConsecutiveOnes(new int[]{0,1,1,0,1,1}));
 	}
 	
 	/**
@@ -434,5 +438,87 @@ public class MathProblems {
         	mask <<= 1;
         }
     	return (int) ((~num) & (mask - 1));
+    }
+    
+    /**
+     * 你需要找到由两个 n 位数的乘积组成的最大回文数。
+		由于结果会很大，你只需返回最大回文数 mod 1337得到的结果。
+		示例: 输入: 2
+		输出: 987
+		解释: 99 x 91 = 9009, 9009 % 1337 = 987
+		说明: n 的取值范围为 [1,8]。
+		
+		解题思路：
+		从upper开始遍历，但此时结束位置不是lower，而是当前数的平方大于回文数，因为我们遍历的是相乘得到回文数的两个数中的较大数
+		，一旦超过这个范围，就变成较小数了，就重复计算了。比如对于回文数9009，其是由99和91组成的，其较大数的范围是[99,95]，
+		所以当遍历到94时，另一个数至少需要是95，而这种情况在之前已经验证过了。
+     * @param n
+     * @return
+     */
+    public int largestPalindrome(int n) {
+        int upper = (int) (Math.pow(10, n) - 1);
+        int lower = upper / 10;
+        for(int i = upper; i > lower; i--){
+        	long front = i;
+        	long reverse = 0;
+        	long back = front;
+        	while(back != 0){
+        		long rem = back % 10;
+        		reverse = reverse * 10 + rem;
+        		front *= 10;
+        		back /= 10;
+        	}
+        	// 构造回文
+        	long p = front + reverse;
+        	for(long j = upper; j * j > p; j--){
+        		if(p % j == 0){
+        			return (int) (p % 1337);
+        		}
+        	}
+        }
+    	return 9;
+    }
+    private boolean isPalidrome(int num){
+    	int result = 0;
+    	while (result < num){
+    		int rem = num % 10;
+    		if(num > Integer.MAX_VALUE / 10){
+    			return false;
+    		}
+    		result = result * 10 + rem;
+    		if(result == num){
+    			return true;
+    		}
+    		num /= 10;
+    	}
+    	return result == num;
+    }
+    
+    
+    /**
+     * 给定一个二进制数组， 计算其中最大连续1的个数。
+		示例 1:
+		输入: [1,1,0,1,1,1]
+		输出: 3
+		解释: 开头的两位和最后的三位都是连续1，所以最大连续1的个数是 3.
+		注意：
+		输入的数组只包含 0 和1。
+		输入数组的长度是正整数，且不超过 10,000。
+     * @param nums
+     * @return
+     */
+    public int findMaxConsecutiveOnes(int[] nums) {
+     
+    	int lastZero = -1;
+    	int maxLen = Integer.MIN_VALUE;
+    	for(int i = 0; i < nums.length; i++){
+    		if(nums[i] == 0){
+    			int oneNum = i - 1 - lastZero;
+    			maxLen = Math.max(maxLen, oneNum);
+    			lastZero = i;
+    		}
+    	}
+    	int lastNum = nums.length - 1 - lastZero;
+    	return Math.max(maxLen, lastNum);
     }
 }
