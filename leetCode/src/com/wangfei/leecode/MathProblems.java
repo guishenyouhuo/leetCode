@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.wangfei.utils.ListUtils;
+import com.wangfei.utils.PrintArray;
 
 public class MathProblems {
 
@@ -55,7 +56,11 @@ public class MathProblems {
 //		System.out.println(99999999 * 99999999);
 		
 //		System.out.println(mp.largestPalindrome(8));
-		System.out.println(mp.findMaxConsecutiveOnes(new int[]{0,1,1,0,1,1}));
+//		System.out.println(mp.findMaxConsecutiveOnes(new int[]{0,1,1,0,1,1}));
+//		System.out.println(mp.constructRectangle(10000000)[0] + ", " + mp.constructRectangle(10000000)[1]);
+		int[] nums1 = {2,4};
+		int[] nums2 = {1,2,3,4};
+		PrintArray.printArray(mp.nextGreaterElement(nums1, nums2));
 	}
 	
 	/**
@@ -520,5 +525,81 @@ public class MathProblems {
     	}
     	int lastNum = nums.length - 1 - lastZero;
     	return Math.max(maxLen, lastNum);
+    }
+    
+    
+    /**
+     * 作为一位web开发者， 懂得怎样去规划一个页面的尺寸是很重要的。 现给定一个具体的矩形页面面积，你的任务是设计一个长度为 L 和宽度为 W 且满足以下要求的矩形的页面。要求：
+		1. 你设计的矩形页面必须等于给定的目标面积。
+		2. 宽度 W 不应大于长度 L，换言之，要求 L >= W 。
+		3. 长度 L 和宽度 W 之间的差距应当尽可能小。
+		你需要按顺序输出你设计的页面的长度 L 和宽度 W。
+		示例：
+		输入: 4
+		输出: [2, 2]
+		解释: 目标面积是 4， 所有可能的构造方案有 [1,4], [2,2], [4,1]。
+		但是根据要求2，[1,4] 不符合要求; 根据要求3，[2,2] 比 [4,1] 更能符合要求. 所以输出长度 L 为 2， 宽度 W 为 2。
+		说明:
+		给定的面积不大于 10,000,000 且为正整数。
+		你设计的页面的长度和宽度必须都是正整数。
+     * @param area
+     * @return
+     */
+    public int[] constructRectangle(int area) {
+    	int[] result = new int[2];
+    	int small = 0;
+    	for(int i = 1; i * i <= area; ++i){
+    		if(area % i == 0){
+    			small = i;
+    		}
+    	}
+    	result[0] = area / small;
+    	result[1] = small;
+    	return result;
+    }
+    
+    
+    /**
+     * 给定两个没有重复元素的数组 nums1 和 nums2 ，其中nums1 是 nums2 的子集。找到 nums1 中每个元素在 nums2 中的下一个比其大的值。
+		nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出-1。
+		示例 1:
+		输入: nums1 = [4,1,2], nums2 = [1,3,4,2].
+		输出: [-1,3,-1]
+		解释:
+		    对于num1中的数字4，你无法在第二个数组中找到下一个更大的数字，因此输出 -1。
+		    对于num1中的数字1，第二个数组中数字1右边的下一个较大数字是 3。
+		    对于num1中的数字2，第二个数组中没有下一个更大的数字，因此输出 -1。
+		示例 2:
+		输入: nums1 = [2,4], nums2 = [1,2,3,4].
+		输出: [3,-1]
+		解释:
+		    对于num1中的数字2，第二个数组中的下一个较大数字是3。
+		    对于num1中的数字4，第二个数组中没有下一个更大的数字，因此输出 -1。
+		注意:
+		nums1和nums2中所有元素是唯一的。
+		nums1和nums2 的数组大小都不超过1000。
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    	Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    	for (int i = 0; i < nums2.length; i++) {
+			map.put(nums2[i], i);
+		}
+    	for (int i = 0; i < nums1.length; i++) {
+			int index = map.get(nums1[i]) + 1;
+			while(index < nums2.length){
+				if(nums2[index] > nums1[i]){
+					nums1[i] = nums2[index];
+					break;
+				}
+				++index;
+			}
+			if(index == nums2.length){
+				nums1[i] = -1;
+			}
+		}
+    	return nums1;
     }
 }

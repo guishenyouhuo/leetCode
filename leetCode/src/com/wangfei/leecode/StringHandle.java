@@ -21,11 +21,13 @@ public class StringHandle {
 //		System.out.println(sh.compress(new char[]{'a','b','b','b','b','b','b','b','b','b','b','b','b','c'}));
 //		System.out.println(sh.compress1(new char[]{'a'}));
 //		System.out.println(sh.repeatedSubstringPattern("aabaaba"));
-		System.out.println(sh.licenseKeyFormatting("5F3Z-2e-9-w", 4));
+//		System.out.println(sh.licenseKeyFormatting("5F3Z-2e-9-w", 4));
 		
-		System.out.println(sh.licenseKeyFormatting("2-5g-3-J", 2));
+//		System.out.println(sh.licenseKeyFormatting("2-5g-3-J", 2));
 		
-		System.out.println(sh.licenseKeyFormatting("---", 3));
+//		System.out.println(sh.licenseKeyFormatting("---", 3));
+		String[] words = new String[]{"Hello", "Alaska", "Dad", "Peace"};
+		String[] result = sh.findWords(words);
 	}
 	
 	/**
@@ -271,6 +273,42 @@ public class StringHandle {
     	 String result = "";
     	 if(idx >= 0 && idx < charArray.length){
     		 result = String.valueOf(charArray, idx, charArray.length - idx).toUpperCase();
+    	 }
+    	 return result;
+     }
+     
+     
+     /**
+      * 给定一个单词列表，只返回可以使用在键盘同一行的字母打印出来的单词。键盘如下图所示。
+		American keyboard
+		示例1:
+		输入: ["Hello", "Alaska", "Dad", "Peace"]
+		输出: ["Alaska", "Dad"]
+		注意:
+		你可以重复使用键盘上同一字符。
+		你可以假设输入的字符串将只包含字母。
+      * @param words
+      * @return
+      */
+     public String[] findWords(String[] words) {
+         
+    	 int[] letter = new int[]{1,2,2,1,0,1,1,1,0,1,1,1,2,2,0,0,0,0,1,0,0,2,0,2,0,2};
+    	 List<String> strList = new ArrayList<String>();
+    	 for(String str : words){
+    		  String s = str.toLowerCase();
+    		  int i = 1;
+    		  for(; i < s.length(); i++){
+    			  if(letter[s.charAt(i) - 'a'] != letter[s.charAt(0) - 'a']){
+    				  break;
+    			  }
+    		  }
+    		  if(i == s.length()){
+    			  strList.add(str);
+    		  }
+    	 }
+    	 String[] result = new String[strList.size()];
+    	 for(int i = 0; i < strList.size(); i++){
+    		 result[i] = strList.get(i);
     	 }
     	 return result;
      }
