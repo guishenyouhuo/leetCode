@@ -2,9 +2,12 @@ package com.wangfei.leecode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import com.wangfei.utils.ListUtils;
 import com.wangfei.utils.PrintArray;
@@ -58,9 +61,13 @@ public class MathProblems {
 //		System.out.println(mp.largestPalindrome(8));
 //		System.out.println(mp.findMaxConsecutiveOnes(new int[]{0,1,1,0,1,1}));
 //		System.out.println(mp.constructRectangle(10000000)[0] + ", " + mp.constructRectangle(10000000)[1]);
-		int[] nums1 = {2,4};
-		int[] nums2 = {1,2,3,4};
-		PrintArray.printArray(mp.nextGreaterElement(nums1, nums2));
+//		int[] nums1 = {2,4};
+//		int[] nums2 = {1,2,3,4};
+//		PrintArray.printArray(mp.nextGreaterElement(nums1, nums2));
+		
+//		System.out.println(mp.convertToBase7(8));
+		String[] res = mp.findRelativeRanks(new int[]{10,3,8,9,4});
+		System.out.println(res);
 	}
 	
 	/**
@@ -601,5 +608,135 @@ public class MathProblems {
 			}
 		}
     	return nums1;
+    }
+    
+    
+    /**
+     * 给定一个整数，将其转化为7进制，并以字符串形式输出。
+		示例 1:
+		输入: 100
+		输出: "202"
+		示例 2:
+		输入: -7
+		输出: "-10"
+		注意: 输入范围是 [-1e7, 1e7] 。
+     * @param num
+     * @return
+     */
+    public String convertToBase7(int num) {
+        
+    	if(num == 0){
+    		return "0";
+    	}
+    	boolean isNagtive = false;
+    	if(num < 0){
+    		isNagtive = true;
+    	}
+    	int n = Math.abs(num);
+    	StringBuilder sb = new StringBuilder();
+    	while(n > 0){
+    		sb.insert(0, n % 7);
+    		n /= 7;
+    	}
+    	if(isNagtive){
+    		sb.insert(0, "-");
+    	}
+    	return sb.toString();
+    }
+    
+    
+    /**
+     * 
+		给出 N 名运动员的成绩，找出他们的相对名次并授予前三名对应的奖牌。前三名运动员将会被分别授予 “金牌”，“银牌” 和“ 铜牌”（"Gold Medal", "Silver Medal", "Bronze Medal"）。
+		(注：分数越高的选手，排名越靠前。)
+		示例 1:
+		输入: [5, 4, 3, 2, 1]
+		输出: ["Gold Medal", "Silver Medal", "Bronze Medal", "4", "5"]
+		解释: 前三名运动员的成绩为前三高的，因此将会分别被授予 “金牌”，“银牌”和“铜牌” ("Gold Medal", "Silver Medal" and "Bronze Medal").
+		余下的两名运动员，我们只需要通过他们的成绩计算将其相对名次即可。
+		提示:
+		N 是一个正整数并且不会超过 10000。
+		所有运动员的成绩都不相同。
+     * @param nums
+     * @return
+     */
+    
+    public String[] findRelativeRanks(int[] nums) {
+        
+//    	// 先排序
+//    	heapSort(nums);
+//    	String[] result = new String[nums.length];
+//    	for(int i = 0; i < result.length; i++){
+//    		if(i == 0){
+//    			result[i] = "Gold Medal";
+//    		} else if(i == 1){
+//    			result[i] = "Silver Medal";
+//    		} else if(i == 2){
+//    			result[i] = "Bronze Medal";
+//    		} else {
+//    			result[i] = String.valueOf(i + 1);
+//    		}
+//    	}
+    	
+    	String[] result = new String[nums.length];
+    	SortedMap<Integer, Integer> map = new TreeMap<Integer, Integer>(new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				if(o1 > o2){
+					return -1;
+				} else if(o1 < o2){
+					return 1;
+				} else {
+					return 0;
+				}
+			}
+		});
+    	for(int i = 0; i < nums.length; i++){
+    		map.put(nums[i], i);
+    	}
+    	int index = 1;
+    	for(int key : map.keySet()){
+    		if(index == 1){
+    			result[map.get(key)] = "Gold Medal";
+    		} else if(index == 2){
+    			result[map.get(key)] = "Silver Medal";
+    		} else if(index == 3){
+    			result[map.get(key)] = "Bronze Medal";
+    		} else {
+    			result[map.get(key)] = String.valueOf(index);
+    		}
+    		++index;
+    	}
+    	return result;
+    }
+    
+    // 对数组进行排序
+    private void heapSort(int[] nums){
+    	if(nums == null || nums.length <= 1){
+    		return ;
+    	}
+    	
+    	for(int j = nums.length - 1; j > 0; j--){
+    		heapAdjust(nums, j);
+    		int temp = nums[j];
+			nums[j] = nums[0];
+			nums[0] = temp;
+    	}
+    	
+    }
+    private void heapAdjust(int[] nums, int lastIdx){
+    	int halfPos = (lastIdx - 1) >> 1;
+    	for(int i = halfPos; i >= 0; i--){
+    		int leftIdx = 2 * i + 1;
+    		if(leftIdx + 1 <= lastIdx && nums[leftIdx + 1] < nums[leftIdx]){
+    			++leftIdx;
+    		}
+    		if(nums[leftIdx] < nums[i]){
+    			int temp = nums[i];
+    			nums[i] = nums[leftIdx];
+    			nums[leftIdx] = temp;
+    		}
+    	}
     }
 }

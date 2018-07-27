@@ -1,9 +1,12 @@
 package com.wangfei.utils;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 import com.wangfei.leecode.TreeNode;
+import com.wangfei.leecode.datastruct.NTreeNode;
 
 public final class TreeUtils {
 
@@ -55,6 +58,7 @@ public final class TreeUtils {
 		listBeforeRoot(root.left);
 		listBeforeRoot(root.right);
 	}
+	
 	public static void main(String[] args) {
 		Integer[] nums = {3,9,20,null,null,15,7};
 		TreeNode root = arrayToTree(nums);
