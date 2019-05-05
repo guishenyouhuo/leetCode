@@ -50,5 +50,8 @@ public class NumberTransForm {
 
         return new String(buf, charPos, (32 - charPos));
     }
+    public void test(){
+
+    }
 
 }
